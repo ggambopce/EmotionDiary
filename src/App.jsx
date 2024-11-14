@@ -1,98 +1,38 @@
 import './App.css'
-import { useState, useRef, useReducer, useCallback, createContext, useMemo } from 'react'
-import Header from './components/Header'
-import Editor from './components/Editor'
-import List from './components/List'
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
+import Home from "./pages/Home";
+import Diary from "./pages/Diary";
+import New from "./pages/New";
+import Notfound from './pages/Notfound';
 
-const mockData = [
-  {
-    id: 0,
-    isDone: false,
-    content: "React 공부하기",
-    date: new Date().getTime(),
-  },
-  {
-    id: 1,
-    isDone: false,
-    content: "농구하기",
-    date: new Date().getTime(),
-  },
-  {
-    id: 2,
-    isDone: false,
-    content: "청소하기",
-    date: new Date().getTime(),
-  },
-]
-
-function reducer(state, action) {
-  switch(action.type){
-    case 'CREATE': 
-      return [action.data, ...state];
-    case 'UPDATE': 
-      return state.map((item) =>
-        item.id === action.targetId
-          ? { ...item, isDone: !item.isDone }
-          : item
-        );
-    case 'DELETE':
-      return state.filter((item) => item.id !== action.targetId)
-    
-    default:
-      return state;  
-    }
-}
-
-export const TodoStateContext = createContext();
-export const TodoDispatchContext = createContext();
-
+// 1. "/" : 모든 일기를 조회하는 Home 페이지
+// 2. "/new" : 새로운 일기를 작성하는 New 페이지
+// 3. "/diary" : 일기를 상세히 조회하는 Diary 페이지
 function App() { 
-  const idRef = useRef(3);
-  const [todos, dispatch] = useReducer(reducer, mockData);
-  
-  const onCreate = useCallback((content) =>{
-    dispatch({
-      type: "CREATE",
-      data: {
-        id: idRef.current++,
-        isDone: false,
-        content: content,
-        date: new Date().getTime(),
-      },
-    });
-  }, [])
+  const nav = useNavigate();
 
-  const onUpdate = useCallback((targetId) => {
-    dispatch({
-      type: "UPDATE",
-      targetId: targetId,
-    })
-  },[]);
-
-  const onDelete = useCallback((targetId)=>{
-    dispatch({
-      type: "DELETE",
-      targetId: targetId,
-    });
-  }, []); 
-
-  const memoizedDispatch = useMemo(() => {
-    return {onCreate, onUpdate, onDelete};
-  }, []);
+  const onClickButton = () => {
+    nav("/new");
+  };
 
   return (
-    <div className="App">
-     <Header />
-     <TodoStateContext.Provider value={todos}>
-        <TodoDispatchContext.Provider 
-          value={memoizedDispatch}>
-           <Editor />
-           <List />
-
-        </TodoDispatchContext.Provider>
-     </TodoStateContext.Provider>
+  <>
+    <div>
+      <Link to={"/"}>Home</Link>
+      <Link to={"/new"}>New</Link>
+      <Link to={"/diary"}>Diary</Link>
     </div>
-  )
+    <button onClick={onClickButton}>New 페이지로 이동</button>
+    <Routes>
+      <Route path="/" element={<Home />} /> 
+      <Route path="/new" element={<New />} />
+      <Route path="/diary/:id" element={<Diary />} />   
+      <Route path="*" element={<Notfound />} /> 
+    </Routes>
+  </>
+  
+  );
+  
 }
 
 export default App
