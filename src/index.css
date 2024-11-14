@@ -1,0 +1,8 @@
+@font-face {
+    font-family: "NanumPenScript";
+    src: url("/NanumPenScript-Regular.ttf");
+}
+
+body * {
+    font-family: "NanumPenScript";
+}
