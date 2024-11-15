@@ -1,5 +1,5 @@
 import './App.css'
-import { useReducer, useRef } from 'react';
+import { useReducer, useRef, createContext } from 'react';
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Diary from "./pages/Diary";
@@ -31,8 +31,13 @@ function reducer(state, action) {
         String(item.id) === String(action.data.id) ? action.data : item);
     case "DELETE":
       return state.filter((item) => String(item.id) !== String(action.id));
+    default:
+      return state;  
   }
 }
+
+const DiaryStateContext = createContext();
+const DiaryDispatchContext = createContext();
 
 function App() { 
     const [data, dispatch] = useReducer(reducer, mockData);
@@ -72,13 +77,25 @@ function App() {
 
   return (
   <>
-    <Routes>
-      <Route path="/" element={<Home />} /> 
-      <Route path="/new" element={<New />} />
-      <Route path="/diary/:id" element={<Diary />} />  
-      <Route path="/edit/:id" element={<Edit />} />
-      <Route path="*" element={<Notfound />} /> 
-    </Routes>
+    <DiaryStateContext.Provider value={data}>
+      <DiaryDispatchContext.Provider
+        value={{
+          onCreate,
+          onUpdate,
+          onDelete,
+        }}
+      >
+        <Routes>
+          <Route path="/" element={<Home />} /> 
+          <Route path="/new" element={<New />} />
+          <Route path="/diary/:id" element={<Diary />} />  
+          <Route path="/edit/:id" element={<Edit />} />
+          <Route path="*" element={<Notfound />} /> 
+        </Routes>
+      </DiaryDispatchContext.Provider>
+      
+    </DiaryStateContext.Provider>
+    
   </>
   
   );
