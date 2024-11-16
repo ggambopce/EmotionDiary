@@ -26,7 +26,7 @@ const getMonthlyData = (pivotDate, data) => {
     ).getTime();
 
     return data.filter((item) => 
-        beginTime <= item.createDate && item.createDate <= endTime);
+        beginTime <= item.createdDate && item.createdDate <= endTime);
 };
     
 const Home = () => {

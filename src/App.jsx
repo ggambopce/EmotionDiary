@@ -10,19 +10,19 @@ import Notfound from "./pages/Notfound";
 const mockData = [
   {
     id: 1,
-    createDate: new Date("2024-11-16").getTime(),
+    createdDate: new Date("2024-11-16").getTime(),
     emotionId: 1,
     content: "1번일기 내용",
   },
   {
     id: 2,
-    createDate: new Date("2024-11-14").getTime(),
+    createdDate: new Date("2024-11-14").getTime(),
     emotionId: 2,
     content: "2번일기 내용",
   },
   {
     id: 3,
-    createDate: new Date("2024-10-22").getTime(),
+    createdDate: new Date("2024-10-22").getTime(),
     emotionId: 3,
     content: "3번일기 내용",
   },
@@ -50,24 +50,24 @@ function App() {
     const idRef = useRef(4);
 
     // 새로운 일기 추가
-    const onCreate = (createDate, emotionId, content) => {
+    const onCreate = (createdDate, emotionId, content) => {
       dispatch({
         type: "CREATE",
         data: {
           id: idRef.current++,
-          createDate,
+          createdDate,
           emotionId,
           content,
         }
       });
     }
     // 기존 일기 수정
-    const onUpdate = (id, createDate, emotionId, content) => {
+    const onUpdate = (id, createdDate, emotionId, content) => {
       dispatch({
         type: "UPDATE",
         data: {
           id,
-          createDate,
+          createdDate,
           emotionId,
           content,
         }
