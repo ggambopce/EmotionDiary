@@ -1,5 +1,6 @@
 import "./Editor.css";
 import EmotionItem from "./EmotionItem";
+import Button from "./Button";
 
 const emotionList = [
     {
@@ -35,7 +36,7 @@ const Editor = () => {
         </section>
         <section className="emotion_section">
             <h4>오늘의 감정</h4>
-            <div className="emtion_list_wrapper">
+            <div className="emotion_list_wrapper">
                 {emotionList.map((item) => (
                     <EmotionItem 
                         key={item.emotionId} {...item} 
@@ -43,9 +44,15 @@ const Editor = () => {
                 ))} 
             </div>
         </section>
-        <section className="content_section"></section>
-        <section className="button_section"></section>
+        <section className="content_section">
+            <h4>오늘의 일기</h4>
+            <textarea placeholder="오늘은 어땠나요?"/>
+        </section>
+        <section className="button_section">
+            <Button text={"취소하기"}/>
+            <Button text={"작성완료"} type={"POSITIVE"}/>
+        </section>
     </div>);
 }
 
-export default Editor
+export default Editor 
